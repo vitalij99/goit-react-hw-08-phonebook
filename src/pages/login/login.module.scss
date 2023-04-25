@@ -1,0 +1,35 @@
+.form {
+width: 350px;
+margin: 0 auto;
+padding: 20px;
+border: 2px solid #f2ff00;
+border-radius: 20px;
+}
+
+.form .label:not(:last-child) {
+    margin-bottom: 30px;
+}
+.label {
+    display: block;
+}
+.text {
+    display: inline-block;
+    width: 100px;
+    color: #f2ff00;
+    
+}
+
+.imput {
+    color: #f2ff00;
+    background-color: #0a0091 ;
+    width: 200px;
+    padding: 9px;
+    padding-left: 15px;
+    border-radius: 10px;
+
+    &:active,
+    &:hover,
+    &:focus {
+        outline: 2px solid #f2ff00;    
+    }
+}
