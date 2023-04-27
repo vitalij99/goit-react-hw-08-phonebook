@@ -3,6 +3,9 @@ import style from '../login/login.module.scss';
 
 import { createImput } from 'pages/login/Login';
 import Btn from 'components/btn/btn';
+import { useDispatch } from 'react-redux';
+import { singnupThunk } from 'redux/authentication/thunk';
+import { selectAuthReducer } from 'pages/login/selectors';
 
 const options = [
   { name: 'name', text: "Ім'я:", type: 'text' },
@@ -11,9 +14,22 @@ const options = [
 ];
 
 function Register() {
+  const dispatch = useDispatch(selectAuthReducer);
+  const handleOnSubmit = eve => {
+    eve.preventDefault();
+    const { email, password, name } = eve.target.elements;
+    const user = {
+      email: email.value,
+      password: password.value,
+      name: name.value,
+    };
+
+    dispatch(singnupThunk(user));
+    eve.target.reset();
+  };
   return (
     <div className={style.form}>
-      <form>
+      <form onSubmit={handleOnSubmit}>
         {options.map(createImput)}
         <Btn type={'submit'}>Register</Btn>
       </form>

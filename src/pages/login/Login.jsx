@@ -1,6 +1,9 @@
 import React from 'react';
 import style from './login.module.scss';
 import Btn from 'components/btn/btn';
+import { useDispatch } from 'react-redux';
+import { selectAuthReducer } from './selectors';
+import { loginThunk } from 'redux/authentication/thunk';
 
 const options = [
   { name: 'email', text: 'Email:', type: 'email' },
@@ -8,9 +11,21 @@ const options = [
 ];
 
 export const Login = () => {
+  const dispatch = useDispatch(selectAuthReducer);
+  const handleOnSubmit = eve => {
+    eve.preventDefault();
+    const { email, password } = eve.target.elements;
+    const user = {
+      email: email.value,
+      password: password.value,
+    };
+
+    dispatch(loginThunk(user));
+    eve.target.reset();
+  };
   return (
     <div className={style.form}>
-      <form>
+      <form onSubmit={handleOnSubmit}>
         {options.map(createImput)}
         <Btn type={'submit'}>login</Btn>
       </form>

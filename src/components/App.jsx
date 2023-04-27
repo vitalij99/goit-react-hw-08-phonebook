@@ -6,6 +6,7 @@ import Register from 'pages/register/Register';
 
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import PrivateRoute from 'route/privateRoute';
 
 export const App = () => {
   return (
@@ -13,7 +14,7 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<Layaout />}>
           <Route index element={<Home />} />
-          <Route path="/contacts" element={<Contacts />} />
+          <PrivateRoute path="/contacts" element={<Contacts />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>

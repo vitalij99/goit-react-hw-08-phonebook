@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import style from './AppBar.module.scss';
+import Usermenu from 'components/usermenu/Usermenu';
 
 const navItems = [
   { href: '/', text: 'Home' },
@@ -27,6 +28,7 @@ const AppBar = () => {
             </li>
           ))}
         </ul>
+        <Usermenu />
       </nav>
     </header>
   );

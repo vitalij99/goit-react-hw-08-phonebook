@@ -1,3 +1,7 @@
+nav {
+    display: flex;
+    align-items: center;
+}
 .header {       
     
     background-color: #0104af;
@@ -10,7 +14,8 @@
     gap: 30px;
 }
 .link,
-.active {
+.active
+ {
     font-size: 18px;
     color: #f2ff00bf;
     text-decoration: none;

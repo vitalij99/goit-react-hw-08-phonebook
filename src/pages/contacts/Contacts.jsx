@@ -1,8 +1,8 @@
 import { Report } from 'notiflix/build/notiflix-report-aio';
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
+
 import { useEffect } from 'react';
-import { ColorRing } from 'react-loader-spinner';
+
 import {
   createContactThunk,
   deleteContactThunk,
@@ -39,8 +39,7 @@ export const Contacts = () => {
     }
     const contact = {
       name: name.value,
-      phone: phone.value,
-      id: nanoid(),
+      number: phone.value,
     };
     dispatch(createContactThunk(contact));
     event.target.reset();

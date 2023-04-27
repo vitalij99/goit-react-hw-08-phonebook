@@ -4,10 +4,10 @@ import style from './ContactList.module.css';
 export function ContactList({ contacts, deleteContact }) {
   return (
     <ul className={style.list}>
-      {contacts.map(({ id, name, phone }) => (
+      {contacts.map(({ id, name, number }) => (
         <li className={style.item} key={id}>
           <p>
-            {name}: {phone}
+            {name}: {number}
           </p>
           <button
             className={style.button}
@@ -27,7 +27,7 @@ ContactList.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      phone: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
     })
   ),
   deleteContact: PropTypes.func.isRequired,

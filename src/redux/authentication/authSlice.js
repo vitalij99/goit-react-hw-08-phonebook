@@ -1,10 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import {
-  singnupThunk,
-  loginThunk,
-  logoutThunk,
-  getContactThunk,
-} from './thunk';
+import { singnupThunk, loginThunk, logoutThunk } from './thunk';
 
 const STATUS = {
   PENDING: 'pending',
@@ -17,44 +12,47 @@ const initialState = {
   token: null,
   isLoggedIn: false,
   isRefreshing: false,
+  isLoading: false,
+  error: null,
 };
-const arrThunks = [singnupThunk, loginThunk, logoutThunk, getContactThunk];
+const arrThunks = [singnupThunk, loginThunk, logoutThunk];
 
 const fn = type => arrThunks.map(el => el[type]);
 
-const handlePending = ({ contacts }) => {
-  contacts.isLoading = true;
+const handleIsLoggedIn = (state, { payload }) => {
+  state.user = payload.user;
+  state.token = payload.token;
+  state.isLoggedIn = true;
 };
-const handleFulfilledGet = ({ contacts }, { payload }) => {
-  contacts.items = payload;
+const handleLogout = state => {
+  state.user = initialState.user;
+  state.token = initialState.token;
+  state.isLoggedIn = false;
 };
-const handleFulfilledDel = ({ contacts }, { payload }) => {
-  contacts.items = contacts.items.filter(el => el.id !== payload.id);
+const handlePending = state => {
+  state.isLoading = true;
 };
-const handleFulfilledCreate = ({ contacts }, { payload }) => {
-  contacts.items.push(payload);
+const handleFulfilled = state => {
+  state.isLoading = false;
+  state.error = '';
 };
-const handleRejected = ({ contacts }, { payload }) => {
-  contacts.isLoading = false;
-  contacts.error = payload;
+const handleRejected = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = payload;
 };
-const handleFulfilled = ({ contacts }) => {
-  contacts.isLoading = false;
-  contacts.error = '';
-};
-// export const authSlice = createSlice({
-//   name: 'auth',
-//   initialState,
-//   // extraReducers: builder => {
-//   //   const { PENDING, FULFILLED, REJECTED } = STATUS;
-//   //   builder
-//   //     .addCase(getContactThunk.fulfilled, handleFulfilledGet)
-//   //     .addCase(createContactThunk.fulfilled, handleFulfilledCreate)
-//   //     .addCase(deleteContactThunk.fulfilled, handleFulfilledDel)
-//   //     .addMatcher(isAnyOf(...fn(PENDING)), handlePending)
-//   //     .addMatcher(isAnyOf(...fn(REJECTED)), handleRejected)
-//   //     .addMatcher(isAnyOf(...fn(FULFILLED)), handleFulfilled);
-//   // },
-// });
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  extraReducers: builder => {
+    const { PENDING, FULFILLED, REJECTED } = STATUS;
+    builder
+      .addCase(singnupThunk.fulfilled, handleIsLoggedIn)
+      .addCase(loginThunk.fulfilled, handleIsLoggedIn)
+      .addCase(logoutThunk.fulfilled, handleLogout)
+      .addMatcher(isAnyOf(...fn(PENDING)), handlePending)
+      .addMatcher(isAnyOf(...fn(REJECTED)), handleRejected)
+      .addMatcher(isAnyOf(...fn(FULFILLED)), handleFulfilled);
+  },
+});
 
-// export const authReducer = authSlice.reducer;
+export const authReducer = authSlice.reducer;

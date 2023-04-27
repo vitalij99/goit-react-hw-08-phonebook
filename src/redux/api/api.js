@@ -1,34 +1,70 @@
 import axios from 'axios';
+import { Notify } from 'notiflix';
 
-axios.defaults.baseURL = 'https://644039963dee5b763e323c3f.mockapi.io';
-// axios.defaults.baseURL = 'https://connections-api.herokuapp.com/';
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com/';
+
+const tokenOperation = {
+  setToken: token => {
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  },
+  clearToken: () => {
+    axios.defaults.headers.common.Authorization = '';
+  },
+};
 
 export const singnupApi = async user => {
-  const response = await axios.post('/users/signup', user);
-  return response.data;
+  try {
+    const { data } = await axios.post('/users/signup', user);
+    tokenOperation.setToken(data.token);
+    Notify.success('Registrated succesfully!');
+    return data;
+  } catch (error) {
+    Notify.failure(error);
+  }
 };
 export const loginApi = async user => {
-  const response = await axios.post('/users/login', user);
-  return response.data;
+  try {
+    const { data } = await axios.post('/users/login', user);
+    tokenOperation.setToken(data.token);
+    Notify.success('Login sucess!');
+    return data;
+  } catch (error) {
+    Notify.failure(error);
+  }
 };
 export const logoutApi = async () => {
-  const response = await axios.post(`/contacts/`);
-  return response.data;
+  try {
+    const { data } = await axios.post('/users/logout');
+    Notify.success('Login logout!');
+    return data;
+  } catch (error) {
+    Notify.failure(error);
+  }
 };
-export const getContactApi = async () => {
-  const response = await axios.get(`/users/current`);
-  return response.data;
+export const fetchContacts = async () => {
+  try {
+    const { data } = await axios.get('/contacts');
+    return data;
+  } catch (error) {
+    Notify.failure(error);
+  }
 };
 
-export const getContact = async () => {
-  const response = await axios.get('/contacts');
-  return response.data;
-};
 export const createContact = async contact => {
-  const response = await axios.post('/contacts', contact);
-  return response.data;
+  try {
+    const { data } = await axios.post('/contacts', contact);
+    Notify.success('Contact create!');
+    return data;
+  } catch (error) {
+    Notify.failure(error);
+  }
 };
 export const deleteContact = async id => {
-  const response = await axios.delete(`/contacts/${id}`);
-  return response.data;
+  try {
+    const { data } = await axios.delete(`/contacts/${id}`);
+    Notify.success('Contact delete!');
+    return data;
+  } catch (error) {
+    Notify.failure(error);
+  }
 };
