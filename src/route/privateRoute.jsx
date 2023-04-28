@@ -3,7 +3,7 @@ import { selectAuthReducer } from 'pages/login/selectors';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-export const PrivateRoute = ({
+const PrivateRoute = ({
   redirectTo = '/',
   component: Component,
   ...routerProps
