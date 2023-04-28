@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 
 import { refreshUserThunk } from 'redux/authentication/thunk';
-import { PrivateRoute } from 'route/PrivateRoute';
-import RestrictedRoute from 'route/RestrictedRoute';
+import { PrivateRoute } from '../route/PrivateRoute';
+import RestrictedRoute from '../route/RestrictedRoute';
 import Layaout from 'pages/layaout/layaout';
 import { selectIsRefreshing } from 'pages/login/selectors';
 import { Home } from 'pages/home/Home';
