@@ -3,9 +3,10 @@ import style from '../login/login.module.scss';
 
 import { createImput } from 'pages/login/Login';
 import Btn from 'components/btn/btn';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { singnupThunk } from 'redux/authentication/thunk';
-import { selectAuthReducer } from 'pages/login/selectors';
+import { selectAuthReducer, selectIsLoading } from 'pages/login/selectors';
+import { Loader } from 'components/Loader/Loader';
 
 const options = [
   { name: 'name', text: "Ім'я:", type: 'text' },
@@ -14,6 +15,7 @@ const options = [
 ];
 
 function Register() {
+  const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch(selectAuthReducer);
   const handleOnSubmit = eve => {
     eve.preventDefault();
@@ -28,12 +30,15 @@ function Register() {
     eve.target.reset();
   };
   return (
-    <div className={style.form}>
-      <form onSubmit={handleOnSubmit}>
-        {options.map(createImput)}
-        <Btn type={'submit'}>Register</Btn>
-      </form>
-    </div>
+    <>
+      {isLoading && <Loader />}
+      <div className={style.form}>
+        <form onSubmit={handleOnSubmit}>
+          {options.map(createImput)}
+          <Btn type={'submit'}>Register</Btn>
+        </form>
+      </div>
+    </>
   );
 }
 

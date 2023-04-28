@@ -1,16 +1,17 @@
-import React from 'react';
 import style from './login.module.scss';
 import Btn from 'components/btn/btn';
-import { useDispatch } from 'react-redux';
-import { selectAuthReducer } from './selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAuthReducer, selectIsLoading } from './selectors';
 import { loginThunk } from 'redux/authentication/thunk';
+import { Loader } from 'components/Loader/Loader';
 
 const options = [
   { name: 'email', text: 'Email:', type: 'email' },
   { name: 'password', text: 'Пароль:', type: 'password' },
 ];
 
-export const Login = () => {
+const Login = () => {
+  const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch(selectAuthReducer);
   const handleOnSubmit = eve => {
     eve.preventDefault();
@@ -24,12 +25,15 @@ export const Login = () => {
     eve.target.reset();
   };
   return (
-    <div className={style.form}>
-      <form onSubmit={handleOnSubmit}>
-        {options.map(createImput)}
-        <Btn type={'submit'}>login</Btn>
-      </form>
-    </div>
+    <>
+      {isLoading && <Loader />}
+      <div className={style.form}>
+        <form onSubmit={handleOnSubmit}>
+          {options.map(createImput)}
+          <Btn type={'submit'}>login</Btn>
+        </form>
+      </div>
+    </>
   );
 };
 
@@ -41,3 +45,4 @@ export function createImput({ name, text, type }) {
     </label>
   );
 }
+export default Login;

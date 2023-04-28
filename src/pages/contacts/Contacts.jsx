@@ -15,7 +15,7 @@ import { Filter } from 'components/Filter/Filter';
 import { ContactList } from 'components/ContactList/ContactList';
 import { Loader } from 'components/Loader/Loader';
 
-export const Contacts = () => {
+const Contacts = () => {
   const { items: contacts, isLoading } = useSelector(
     state => state.contacts.contacts
   );
@@ -82,3 +82,4 @@ export const Contacts = () => {
     </>
   );
 };
+export default Contacts;

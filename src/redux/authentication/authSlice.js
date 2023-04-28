@@ -1,5 +1,10 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { singnupThunk, loginThunk, logoutThunk } from './thunk';
+import {
+  singnupThunk,
+  loginThunk,
+  logoutThunk,
+  refreshUserThunk,
+} from './thunk';
 
 const STATUS = {
   PENDING: 'pending',
@@ -15,7 +20,7 @@ const initialState = {
   isLoading: false,
   error: null,
 };
-const arrThunks = [singnupThunk, loginThunk, logoutThunk];
+const arrThunks = [singnupThunk, loginThunk, logoutThunk, refreshUserThunk];
 
 const fn = type => arrThunks.map(el => el[type]);
 
@@ -28,6 +33,18 @@ const handleLogout = state => {
   state.user = initialState.user;
   state.token = initialState.token;
   state.isLoggedIn = false;
+};
+const handleRefreshUserPending = state => {
+  state.isRefreshing = true;
+};
+const handleRefreshUserFulfilled = (state, { payload }) => {
+  state.user = payload;
+  state.isLoggedIn = true;
+  state.isRefreshing = false;
+};
+const handleRefreshUserRejected = (state, { payload }) => {
+  state.error = payload;
+  state.isRefreshing = false;
 };
 const handlePending = state => {
   state.isLoading = true;
@@ -49,6 +66,9 @@ export const authSlice = createSlice({
       .addCase(singnupThunk.fulfilled, handleIsLoggedIn)
       .addCase(loginThunk.fulfilled, handleIsLoggedIn)
       .addCase(logoutThunk.fulfilled, handleLogout)
+      .addCase(refreshUserThunk.pending, handleRefreshUserPending)
+      .addCase(refreshUserThunk.fulfilled, handleRefreshUserFulfilled)
+      .addCase(refreshUserThunk.rejected, handleRefreshUserRejected)
       .addMatcher(isAnyOf(...fn(PENDING)), handlePending)
       .addMatcher(isAnyOf(...fn(REJECTED)), handleRejected)
       .addMatcher(isAnyOf(...fn(FULFILLED)), handleFulfilled);
